@@ -1,113 +1,55 @@
-var randomName;
+let wordListsPromise;
 
-function generateRandomName(targetId) {
-	var adjectives = [
-		"admiring",
-		"adoring",
-		"affectionate",
-		"amazing",
-		"angry",
-		"awesome",
-		"beautiful",
-		"busy",
-		"charming",
-		"clever",
-		"cool",
-		"competent",
-		"confident",
-		"crazy",
-		"distracted",
-		"dreamy",
-		"eager",
-		"elegant",
-		"eloquent",
-		"epic",
-		"exciting",
-		"gifted",
-		"goofy",
-		"funny",
-		"great",
-		"happy",
-		"hopeful",
-		"hungry",
-		"inspiring",
-		"intelligent",
-		"interesting",
-		"kind",
-		"loving",
-		"magical",
-		"naughty",
-		"nervous",
-		"nice",
-		"nostalgic",
-		"peaceful",
-		"quirky",
-		"relaxed",
-		"romantic",
-		"sad",
-		"sharp",
-		"silly",
-		"sleepy",
-		"strange",
-		"suspicious",
-		"sweet",
-		"thirsty",
-		"tired",
-		"wounderful"
-	];
+function loadWordLists() {
+    if (!wordListsPromise) {
+        wordListsPromise = fetch("../data/wordlists.json")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Unable to load word lists");
+                }
+                return response.json();
+            })
+            .catch((error) => {
+                console.error(error);
+                wordListsPromise = undefined;
+                throw error;
+            });
+    }
 
-	var nouns = [
-		"bat",
-		"cat",
-		"giraff",
-		"lion",
-		"monkey",
-		"panda",
-		"penguin",
-		"rabbit",
-		"snake",
-		"tiger",
-		"zebra",
-		"elephant",
-		"dog",
-		"dragonfly",
-		"butterfly",
-		"falcon",
-		"gorilla",
-		"flamingo",
-		"fish",
-		"fly",
-		"gnu",
-		"kangaroo",
-		"hamster",
-		"seagull",
-		"turtle",
-		"whale",
-		"lemur",
-		"pig",
-		"ostrich",
-		"opossum",
-		"pigeon",
-		"rabbit",
-		"snake",
-		"sheep",
-		"turtle",
-		"wolf",
-		"zebra",
-		"ant",
-		"bee",
-		"butterfly"
-	];
+    return wordListsPromise;
+}
 
-	var randomNoun = nouns[Math.floor(Math.random()*nouns.length)];
-	var randomAdjective = adjectives[Math.floor(Math.random()*adjectives.length)];
+function selectRandomWord(words) {
+    if (!Array.isArray(words) || words.length === 0) {
+        throw new Error("Word list must be a non-empty array");
+    }
 
-	var randomName = randomAdjective + "-" + randomNoun;
+    return words[Math.floor(Math.random() * words.length)];
+}
 
-	var target = document.getElementById(targetId);
-	target.value = randomName;
+async function generateRandomName(targetId) {
+    let target;
 
-	return randomName;
+    try {
+        const { adjectives, nouns } = await loadWordLists();
+        const randomNoun = selectRandomWord(nouns);
+        const randomAdjective = selectRandomWord(adjectives);
+        const randomName = randomAdjective + "-" + randomNoun;
+
+        target = document.getElementById(targetId);
+        if (target) {
+            target.value = randomName;
+        }
+
+        return randomName;
+    } catch (error) {
+        console.error("Failed to generate a random name", error);
+        target = target || document.getElementById(targetId);
+        if (target) {
+            target.value = "error-loading-names";
+        }
+        return null;
+    }
 }
 
 function copyToClipboard(getValueFrom) {
