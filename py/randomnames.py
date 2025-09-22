@@ -26,3 +26,109 @@ def main():
 
 if __name__ == "__main__":
 	main()
+=======
+import random
+
+
+def generate_random_name():
+    adjectives = [
+        "admiring",
+        "adoring",
+        "affectionate",
+        "amazing",
+        "angry",
+        "awesome",
+        "beautiful",
+        "busy",
+        "charming",
+        "clever",
+        "cool",
+        "competent",
+        "confident",
+        "crazy",
+        "distracted",
+        "dreamy",
+        "eager",
+        "elegant",
+        "eloquent",
+        "epic",
+        "exciting",
+        "gifted",
+        "goofy",
+        "funny",
+        "great",
+        "happy",
+        "hopeful",
+        "hungry",
+        "inspiring",
+        "intelligent",
+        "interesting",
+        "kind",
+        "loving",
+        "magical",
+        "naughty",
+        "nervous",
+        "nice",
+        "nostalgic",
+        "peaceful",
+        "quirky",
+        "relaxed",
+        "romantic",
+        "sad",
+        "sharp",
+        "silly",
+        "sleepy",
+        "strange",
+        "suspicious",
+        "sweet",
+        "thirsty",
+        "tired",
+        "wonderful",
+    ]
+
+    nouns = [
+        "ant",
+        "bat",
+        "bee",
+        "butterfly",
+        "cat",
+        "dog",
+        "dragonfly",
+        "elephant",
+        "falcon",
+        "fish",
+        "flamingo",
+        "fly",
+        "giraffe",
+        "gnu",
+        "gorilla",
+        "hamster",
+        "kangaroo",
+        "lemur",
+        "lion",
+        "monkey",
+        "opossum",
+        "ostrich",
+        "panda",
+        "penguin",
+        "pig",
+        "pigeon",
+        "rabbit",
+        "seagull",
+        "sheep",
+        "snake",
+        "tiger",
+        "turtle",
+        "whale",
+        "wolf",
+        "zebra",
+    ]
+    return random.choice(adjectives) + "_" + random.choice(nouns)
+
+
+def main():
+    print(generate_random_name())
+
+
+if __name__ == "__main__":
+    main()
