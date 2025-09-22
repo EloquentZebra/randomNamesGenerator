@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>Random Names Generator</title>
-		<link rel="stylesheet" href="/base.css">
-		<script src="index.js"></script>
-	</head>
-	<body class="container" onload="generateRandomName('ansRandomName');">
-		<h1>Random Names Generator</h1>
-		<button id="generateName" onclick="generateRandomName('ansRandomName');">Generate</button>
-		<hr>
-		<input type="text" id="ansRandomName" value="" readonly>
-		<button onclick="copyToClipboard('ansRandomName');">Copy</button>
-		<script type="text/javascript">
-
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Random Names Generator</title>
+    <link rel="stylesheet" href="/base.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body class="container">
+    <main>
+      <h1>Random Names Generator</h1>
+      <button id="generateName" type="button">Generate</button>
+      <hr />
+      <input
+        type="text"
+        id="ansRandomName"
+        value=""
+        readonly
+        aria-label="Generated random name"
+      />
+      <button id="copyName" type="button" disabled>Copy</button>
+      <p id="statusMessage" role="status" aria-live="polite" hidden></p>
+    </main>
+  </body>
 </html>

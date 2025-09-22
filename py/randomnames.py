@@ -1,132 +1,51 @@
+"""Random name generator utilities."""
+
+from __future__ import annotations
+
 import json
 import random
 from pathlib import Path
+from typing import Dict, List
+
+_WORD_LISTS: Dict[str, List[str]] | None = None
 
 
-def _load_wordlists():
-        wordlist_path = Path(__file__).resolve().parents[1] / "data" / "wordlists.json"
-        with wordlist_path.open() as wordlist_file:
-                return json.load(wordlist_file)
+def _load_wordlists() -> Dict[str, List[str]]:
+    wordlist_path = Path(__file__).resolve().parents[1] / "data" / "wordlists.json"
+    with wordlist_path.open(encoding="utf-8") as wordlist_file:
+        data = json.load(wordlist_file)
+
+    adjectives = data.get("adjectives")
+    nouns = data.get("nouns")
+
+    if not isinstance(adjectives, list) or not isinstance(nouns, list):
+        raise ValueError("Word lists must contain 'adjectives' and 'nouns' arrays")
+
+    if not adjectives or not nouns:
+        raise ValueError("Word lists are missing adjectives or nouns")
+
+    return {"adjectives": adjectives, "nouns": nouns}
 
 
-WORD_LISTS = _load_wordlists()
+def _get_wordlists() -> Dict[str, List[str]]:
+    global _WORD_LISTS
+    if _WORD_LISTS is None:
+        _WORD_LISTS = _load_wordlists()
+    return _WORD_LISTS
 
 
-def generateRandomName():
-        adjective = WORD_LISTS.get("adjectives")
-        noun = WORD_LISTS.get("nouns")
+def generate_random_name(separator: str = "_") -> str:
+    """Generate a random name from adjective and noun word lists."""
 
-        if not adjective or not noun:
-                raise ValueError("Word lists are missing adjectives or nouns")
-
-        return random.choice(adjective) + "_" + random.choice(noun)
-
-def main():
-	print(generateRandomName())
-
-if __name__ == "__main__":
-	main()
-=======
-import random
+    word_lists = _get_wordlists()
+    adjective = random.choice(word_lists["adjectives"])
+    noun = random.choice(word_lists["nouns"])
+    return f"{adjective}{separator}{noun}"
 
 
-def generate_random_name():
-    adjectives = [
-        "admiring",
-        "adoring",
-        "affectionate",
-        "amazing",
-        "angry",
-        "awesome",
-        "beautiful",
-        "busy",
-        "charming",
-        "clever",
-        "cool",
-        "competent",
-        "confident",
-        "crazy",
-        "distracted",
-        "dreamy",
-        "eager",
-        "elegant",
-        "eloquent",
-        "epic",
-        "exciting",
-        "gifted",
-        "goofy",
-        "funny",
-        "great",
-        "happy",
-        "hopeful",
-        "hungry",
-        "inspiring",
-        "intelligent",
-        "interesting",
-        "kind",
-        "loving",
-        "magical",
-        "naughty",
-        "nervous",
-        "nice",
-        "nostalgic",
-        "peaceful",
-        "quirky",
-        "relaxed",
-        "romantic",
-        "sad",
-        "sharp",
-        "silly",
-        "sleepy",
-        "strange",
-        "suspicious",
-        "sweet",
-        "thirsty",
-        "tired",
-        "wonderful",
-    ]
+def main() -> None:
+    """Print a random name to stdout."""
 
-    nouns = [
-        "ant",
-        "bat",
-        "bee",
-        "butterfly",
-        "cat",
-        "dog",
-        "dragonfly",
-        "elephant",
-        "falcon",
-        "fish",
-        "flamingo",
-        "fly",
-        "giraffe",
-        "gnu",
-        "gorilla",
-        "hamster",
-        "kangaroo",
-        "lemur",
-        "lion",
-        "monkey",
-        "opossum",
-        "ostrich",
-        "panda",
-        "penguin",
-        "pig",
-        "pigeon",
-        "rabbit",
-        "seagull",
-        "sheep",
-        "snake",
-        "tiger",
-        "turtle",
-        "whale",
-        "wolf",
-        "zebra",
-    ]
-    return random.choice(adjectives) + "_" + random.choice(nouns)
-
-
-def main():
     print(generate_random_name())
 
 
